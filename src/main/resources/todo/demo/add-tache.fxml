@@ -3,10 +3,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.TextField?>
 
+<?import java.net.URL?>
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="todo.demo.AddTacheController">
+    <stylesheets>
+        <URL value="@styles.css"/>
+    </stylesheets>
     <TextField fx:id="titreField" promptText="Titre"/>
     <TextField fx:id="descriptionField" promptText="Description"/>
     <TextField fx:id="dateField" promptText="Date"/>
     <Button text="Ajouter" onAction="#handleAjouter"/>
-    <Button text="Retour" onAction="#handleRetour"/>
+    <Button text="Retour" onAction="#switchToMainView"/>
 </VBox>

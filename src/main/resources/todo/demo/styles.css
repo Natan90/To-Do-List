@@ -1,0 +1,20 @@
+/* styles.css */
+.title-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+}
+
+.add-button {
+    -fx-background-color: #4CAF50;
+    -fx-text-fill: white;
+    -fx-padding: 10px;
+}
+.children{
+    -fx-padding: 10px;
+    -fx-background-color: #4CAF50;
+}
+.list-view{
+    -fx-padding : 10px;
+    -fx-width : 300px;
+}

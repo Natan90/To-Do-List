@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class AddTacheController {
+public class  AddTacheController {
     @FXML
     private TextField titreField;
 
@@ -50,17 +50,19 @@ public class AddTacheController {
         }
     }
     @FXML
-    private void handleRetour() {
-        Stage stage = (Stage) retourButton.getScene().getWindow();
-        stage.close();
-
+    private void switchToMainView() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/todo/demo/to-do-view.fxml"));
             Parent root = loader.load();
 
-            Stage stagePrincipal = new Stage();
-            stagePrincipal.setScene(new Scene(root));
-            stagePrincipal.show();
+            Stage stage = new Stage();
+
+            stage.setScene(new Scene(root, 400, 400));
+            stage.show();
+
+            Stage currentStage = (Stage) titreField.getScene().getWindow();
+            currentStage.close();
+
         } catch (IOException e) {
             e.printStackTrace();
         }

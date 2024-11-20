@@ -4,8 +4,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,7 +22,7 @@ import java.nio.file.StandardOpenOption;
 public class TodoController {
 
     @FXML
-    private ListView<String> taskList;
+    private ListView<HBox> taskList;
     @FXML
     private TextField taskTitle;
     @FXML
@@ -29,7 +33,6 @@ public class TodoController {
     @FXML
     public void initialize() throws IOException {
         initJson();
-        loadTasks();
         afficherTaches();
     }
 
@@ -48,6 +51,17 @@ public class TodoController {
             System.out.println("Fichier json existant");
         }
 
+    }
+    private void createJsonFile() {
+        try {
+            JSONObject jsonObject = new JSONObject();
+            JSONArray tachesArray = new JSONArray();
+            jsonObject.put("taches", tachesArray);
+
+            Files.write(Paths.get(FILE_NAME), jsonObject.toString(2).getBytes(), StandardOpenOption.CREATE_NEW);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void addTask(String titre, String description, String date) {
@@ -73,17 +87,7 @@ public class TodoController {
         }
     }
 
-    private void createJsonFile() {
-        try {
-            JSONObject jsonObject = new JSONObject();
-            JSONArray tachesArray = new JSONArray();
-            jsonObject.put("taches", tachesArray);
 
-            Files.write(Paths.get(FILE_NAME), jsonObject.toString(2).getBytes(), StandardOpenOption.CREATE_NEW);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
     private void afficherTaches() throws IOException {
         try {
             String content = new String(Files.readAllBytes(Paths.get(FILE_NAME)));
@@ -99,30 +103,40 @@ public class TodoController {
                 String description = tache.getString("description");
                 boolean completed = tache.getBoolean("completed");
 
-                String status = completed ? "Terminé" : "Non terminé";
-                String taskDisplay = "Titre: " + titre + "\nDescription: " + description + "\nStatut: " + status;
+                CheckBox checkBox = new CheckBox();
+                checkBox.setSelected(completed);
+                checkBox.setOnAction(event -> updateTaskCompletion(tache.getInt("id"), checkBox.isSelected()));
 
-                taskList.getItems().add(taskDisplay);
+                Label taskLabel = new Label("Titre: " + titre + "\nDescription: " + description);
+                HBox taskItem = new HBox(checkBox, taskLabel);
+
+                taskList.getItems().add(taskItem);
+
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
-    private void loadTasks() {
+    private void updateTaskCompletion(int id, boolean selected) {
         try {
             String content = new String(Files.readAllBytes(Paths.get(FILE_NAME)));
             JSONObject jsonObject = new JSONObject(content);
             JSONArray tachesArray = jsonObject.getJSONArray("taches");
 
             for (int i = 0; i < tachesArray.length(); i++) {
-                JSONObject task = tachesArray.getJSONObject(i);
-                taskList.getItems().add(task.getString("titre") + ": " + task.getString("description"));
+                JSONObject tache = tachesArray.getJSONObject(i);
+                if (tache.getInt("id") == id) {
+                    tache.put("completed", selected);
+                    break;
+                }
             }
+
+            Files.write(Paths.get(FILE_NAME), jsonObject.toString(2).getBytes(), StandardOpenOption.WRITE);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+    }
     }
     @FXML
     private void switchAddTacheView() {
