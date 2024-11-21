@@ -2,7 +2,7 @@
 $scriptDirectory = Split-Path -Parent -Path $MyInvocation.MyCommand.Definition
 $localVersionFile = Join-Path $scriptDirectory "version.txt"
 $localJarPath = Join-Path $scriptDirectory "target\demo-1.0-SNAPSHOT.jar"
-$tempDownloadPath = Join-Path $scriptDirectory "target\demo-latest.jar"
+$tempDownloadPath = Join-Path $scriptDirectory "target\demo-1.0-SNAPSHOT"
 
 $githubRepo = "https://github.com/Natan90/To-Do-List.git"
 
