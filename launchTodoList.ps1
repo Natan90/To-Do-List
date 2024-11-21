@@ -4,7 +4,7 @@ $localVersionFile = Join-Path $scriptDirectory "version.txt"
 $localJarPath = Join-Path $scriptDirectory "target\demo-1.0-SNAPSHOT.jar"
 $tempDownloadPath = Join-Path $scriptDirectory "target\demo-1.0-SNAPSHOT"
 
-$githubRepo = "https://github.com/Natan90/To-Do-List.git"
+$githubRepo = "https://github.com/Natan90/To-Do-List/releases/tag/todoList"
 
 # Commandes Java
 $javaCommand = "java"

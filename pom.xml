@@ -11,12 +11,14 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <javafx.version>21</javafx.version>
         <junit.version>5.10.0</junit.version>
-        <java.version>21</java.version>
     </properties>
 
     <dependencies>
-        <!-- JSON library for the project -->
+        <!-- JSON library for handling JSON -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
@@ -37,87 +39,80 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- JavaFX Dependencies (Essential) -->
+        <!-- JavaFX Dependencies -->
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>21</version>
+            <version>${javafx.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>21</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>21</version>
+            <version>${javafx.version}</version>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
-            <!-- Maven Shade Plugin to create an executable JAR -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>shade</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <transformers>
-                        <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>todo.demo.TodoApplication</mainClass>
-                        </transformer>
-                    </transformers>
-                </configuration>
-            </plugin>
-
             <!-- Maven Compiler Plugin for Java 21 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.11.0</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <release>21</release>
                 </configuration>
+            </plugin>
+
+            <!-- Maven Shade Plugin to create a standalone JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>todo.demo.TodoApplication</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <!-- JavaFX Maven Plugin for running the application -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
-                <version>0.0.8</version> <!-- Version stable -->
+                <version>0.0.8</version>
                 <executions>
                     <execution>
                         <id>default-cli</id>
                         <goals>
                             <goal>run</goal>
                         </goals>
-                        <configuration>
-                            <mainClass>todo.demo.TodoApplication</mainClass>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <mainClass>todo.demo.TodoApplication</mainClass>
+                    <mainClass>todo.demo.TodoApplication</mainClass>
+                </configuration>
             </plugin>
-
         </plugins>
     </build>
 
-    <!-- Optional repository to resolve JavaFX if not found in central -->
+    <!-- JavaFX Repository (if required) -->
     <repositories>
         <repository>
-            <id>openjfx-repo</id>
+            <id>openjfx</id>
             <url>https://openjfx.io/maven</url>
         </repository>
     </repositories>
-
 </project>
